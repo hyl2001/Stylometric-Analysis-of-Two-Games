@@ -4,7 +4,7 @@
 - 补充材料（见`.\article_Supplementary Materials`文件夹中的`Supplimentary Materials.pdf`文件），
 - 以及一些用于撰写专栏所需的文件。
 
-# 一些重要文件的介绍
+# 一些重要文件（夹）的介绍
 由于写专栏的代码、数据比较多，管理起来比较复杂，为了防止找不到需要的代码（或数据），亦或是不知道某个脚本（`.py`）的用处，下边对本仓库所存储文件、文件夹做简单介绍。如还有不清楚的地方，请提issue。介绍按实验顺序展开。
 
 注意：所有目录下的`.xlsx`或者`.csv`文件均保存了量化结果。
@@ -29,9 +29,7 @@
 `.\data`用于存储用于实验1、实验2、实验3（已废弃）的数据。`.\data_for_exp4`用于存储用于实验4的数据。
 
 ## `.\data_for_readability_calc`
-其中存储了用于计算文本可读性的数据，与`.\data_for_exp4`下的同名文件夹一样。由于`AlphaReadabilityChinese`[[3]](#3)只能处理`.txt`格式的文件，并且是独立这个仓库中所存储代码的程序，因而只能单独建立一个文件夹用于存放所需文件。
-
-`AlphaReadabilityChinese`仓库位于[这里](https://github.com/leileibama/AlphaReadabilityChinese)。
+其中存储了用于计算文本可读性的数据，与`.\data_for_exp4`下的同名文件夹一样。由于[`AlphaReadabilityChinese`](https://github.com/leileibama/AlphaReadabilityChinese)[[3]](#3)只能处理`.txt`格式的文件，并且是独立这个仓库中所存储代码的程序，因而只能单独建立一个文件夹用于存放所需文件。
 
 ## `.\expirements`
 里边包含实验1、实验2、实验3（已废弃）、实验4的代码（分别存放于独立文件夹中），其中`.\expirements\eval_models.py`是用于筛选实验1和实验2所需机器学习模型的代码，而`.\expirements\run_eval.py`则用于运行该脚本代码。每个独立文件夹下（除实验1之外）的`main.py`均是用于运行文件夹所代表之实验的代码，或生成所需图表。实验1的实验代码在Jupyter Notebook中运行。
