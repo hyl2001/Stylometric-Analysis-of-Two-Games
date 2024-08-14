@@ -1,6 +1,6 @@
 仓库里保存了所有我在写《〈原神〉与〈崩坏：星穹铁道〉的文本风格考据》专栏里用到的
-- 原始数据、
-- 原始代码、
+- 数据、
+- 代码、
 - 补充材料（见`.\article_Supplementary Materials`文件夹中的`Supplimentary Materials.pdf`文件），
 - 以及一些用于撰写专栏所需的文件。
 
