@@ -40,7 +40,7 @@
 
 ## `.\article_Supplementary Materials`
 
-其中包含用于撰写补充材料的`typst`代码、图片，以及生成的补充材料的pdf。
+其中包含用于撰写补充材料的图片、`typst`代码，以及生成的补充材料的pdf。
 
 
 
