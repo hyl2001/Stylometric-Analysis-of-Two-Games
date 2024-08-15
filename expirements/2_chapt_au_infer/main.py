@@ -38,6 +38,13 @@ save_root = 'expirements\\2_chapt_au_infer\\figs_tbls'
 # print('Done drawing fig of GI.')
 
 
+draw_fig.draw_fig('concat.xlsx', f'{save_root}\\SR_chapt_PCA.png', 0, sr_chapt_lookup, kind='pca')
+print('Done drawing fig of HSR.')
+
+draw_fig.draw_fig('concat.xlsx', f'{save_root}\\GI_chapt_PCA.png', 1, gi_chapt_lookup, kind='pca')
+print('Done drawing fig of GI.')
+
+
 # gi_dir_root = 'expirements\\2_chapt_au_infer\\model_eval_res\\GI'
 # gen_eval_res_tabl.gen_tabl(gi_dir_root).T \
 #                  .to_excel(join(save_root, 'GI.xlsx'))

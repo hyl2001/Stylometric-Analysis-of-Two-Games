@@ -9,7 +9,7 @@ from typing import Literal
 
 font = fm.FontProperties(fname='c:\\windows\\fonts\\simsun.ttc')
 
-def draw_lda_fig(stylo_path:str, 
+def draw_fig(stylo_path:str, 
                  save_name:str, 
                  game_type:int, 
                  chapt_num_lookup_tbl:dict|None=None,
@@ -91,8 +91,9 @@ def draw_lda_fig(stylo_path:str,
     L = ax.legend()
     plt.setp(L.texts, family='simsun')
     
-    ax.set_xlabel(f'Function 1\n{fitted.explained_variance_ratio_[0] * 100:.2f}%')
-    ax.set_ylabel(f'Function 2\n{fitted.explained_variance_ratio_[1] * 100:.2f}%')
+    axis_name = 'Function' if kind == 'lda' else 'PC'
+    ax.set_xlabel(f'{axis_name} 1\n{fitted.explained_variance_ratio_[0] * 100:.2f}%')
+    ax.set_ylabel(f'{axis_name} 2\n{fitted.explained_variance_ratio_[1] * 100:.2f}%')
     
     plt.tight_layout()
     plt.savefig(save_name)

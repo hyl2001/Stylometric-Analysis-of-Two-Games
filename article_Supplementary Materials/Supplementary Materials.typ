@@ -50,7 +50,7 @@
 #indent()在bwiki中，《原神》的主线剧情文本是按照章节分组的，而《崩坏：星穹铁道》则是按照每章的小节来分组的。这样的分组模式不利于描写两个游戏每一章的统计文体学特征，因此，在获得生语料之后，还需要切分生语料。具体规则为：计算每个文件除标点外的字符数，按每1000字为单位，对每个文件实施切分，并分别存储。之后利用自然语言处理（natural language processing, NLP）技术对生语料分词（tokenization）、标注词性（part-of-speech tagging），并做依存句法分析（dependency parsing）以便量化文本的统计学特征，在本研究中，我使用了HanLP@he-choi-2021-stem。
 
 === 量化
-#indent()经过NLP，需要对文本的各项特征进行量化以便开展后续实验。在量化之前，由于切分好的生语料文件可能存在长度不足的情况，我依照生语料长度，剔除了这一部分文件。我结合了不同特征以尽可能实现全面的描写。通过自行编写的Python分析脚本和借助外部工具，总共获得了60个不同的参数，具体可以分为三部分，分别由基于文章@WYDH202304004 自行编写的Python分析脚本，来自模仿原版QUITA@kubat_quita_2014 编写的用于分析中文文本的QUITA Python脚本（除特别标注外，下文中的QUITA均指该脚本），外部工具AlphaReadabilityChinese#footnote([https://github.com/leileibama/AlphaReadabilityChinese])@WYWJ202401008 生成。需要注意，文章@WYDH202304004 中的“成语使用数”、“成语种类数/成语使用数”、“四字词语使用数”，由于前两个参数较难实现，我选择舍弃这两个参数，并加入对明喻修辞的计数。同时，由于文章@WYDH202304004 没有描述“词汇活动度”的具体算法，故该参数由QUITA计算。参考文章@CSTY202301004 加入了“句子节奏度”，参考所述“平均小句长”的算法。参考文章@CJXS200803021，加入了平均依存距离（Mean Dependency Distance, MDD），在实际应用过程中，由于每个文件都是由若干个句子组成，MDD是对每个单独的句子作计算，因而为了表示整个文件，我对每个文件中计算得到的MDD再次求平均，并求出相应的标准差，两个参数均记录在生成的参数文件中。此外，原版QUITA中提供了类符/形符比（Type-Token Ratio, TTR），但由于TTR易受文本长度影响@cvrvcek2015simplification，所以在这个研究中，我使用了标准化类符/形符比（Standardized Type-Token Ratio, STTR），该参数按照将200词（我使用的是按照词为切分单位，而不是字）归入一组，分别计算TTR（如果最后一组词数量不足200，但不少于200词的90%（180词），则视为200词，并参与计算），经过计算，获得到一组TTR，最后求该组TTR值的平均值，即为STTR。
+#indent()经过NLP，需要对文本的各项特征进行量化以便开展后续实验。在量化之前，由于切分好的生语料文件可能存在长度不足的情况，我依照生语料长度，剔除了这一部分文件。我结合了不同特征以尽可能实现全面的描写。通过自行编写的Python分析脚本和借助外部工具，总共获得了60个不同的参数，具体可以分为三部分，分别由基于文章@WYDH202304004 自行编写的Python分析脚本，来自模仿原版QUITA@kubat_quita_2014 编写的用于分析中文文本的QUITA Python脚本（除特别标注外，下文中的QUITA均指该脚本），外部工具AlphaReadabilityChinese#footnote([https://github.com/leileibama/AlphaReadabilityChinese])@WYWJ202401008 生成。需要注意，文章@WYDH202304004 中的“成语使用数”、“成语种类数/成语使用数”、“四字词语使用数”，由于前两个参数较难实现，我选择舍弃这两个参数，并加入对明喻（simile）修辞的计数。同时，由于文章@WYDH202304004 没有描述“词汇活动度”的具体算法，故该参数由QUITA计算。参考文章@CSTY202301004 加入了“句子节奏度”，参考所述“平均小句长”的算法。参考文章@CJXS200803021，加入了平均依存距离（Mean Dependency Distance, MDD），在实际应用过程中，由于每个文件都是由若干个句子组成，MDD是对每个单独的句子作计算，因而为了表示整个文件，我对每个文件中计算得到的MDD再次求平均，并求出相应的标准差，两个参数均记录在生成的参数文件中。此外，原版QUITA中提供了类符/形符比（Type-Token Ratio, TTR），但由于TTR易受文本长度影响@cvrvcek2015simplification，所以在这个研究中，我使用了标准化类符/形符比（Standardized Type-Token Ratio, STTR），该参数按照将200词（我使用的是按照词为切分单位，而不是字）归入一组，分别计算TTR（如果最后一组词数量不足200，但不少于200词的90%（180词），则视为200词，并参与计算），经过计算，获得到一组TTR，最后求该组TTR值的平均值，即为STTR。
 
 #indent()量化完成之后还需要标注样本，即说明样本属于哪个游戏，来自哪个游戏的哪个章节。标注规则如下：（1）对于文本来自哪个游戏的标注主要采用二分法，即对于来自《崩坏：星穹铁道》的文本都标注为0，来自《原神》的文本均标注为1。（2）对于章节的标注则采用游戏内的章节号，需要注意的是，序章均标注为0，《原神》的间章则从90开始编号。
 
@@ -171,6 +171,16 @@ $ phi.alt_i(f, x) = sum_(R in Re) 1/M! [f_(x)(P_i^R union i) - f_(x)(P_i^R) ]，
 #pagebreak()
 #align(center)[
   #figure(
+    image("..\article_Supplementary Materials/figs/exp2/PCA.png"),
+    caption: [|利用PCA可视化的两个游戏不同章节文体计量特征。*A* 为《原神》，*B* 为《崩坏：星穹铁道》。PC1、PC2分表代表两个主成分，下边的数字为该主成分解释的方差，即包含了的原始信息的量。],
+    kind: "图S",
+    supplement: "图S"
+  )
+]
+
+#pagebreak()
+#align(center)[
+  #figure(
     image("..\article_Supplementary Materials\figs\exp3\GI_filtered.svg"),
     caption: [|《原神》中不同角色的对话文本的特征聚类。其中去除了对话文本数量较多的旅行者、派蒙。],
     kind: "图S",
@@ -182,7 +192,7 @@ $ phi.alt_i(f, x) = sum_(R in Re) 1/M! [f_(x)(P_i^R union i) - f_(x)(P_i^R) ]，
 #align(center)[
   #figure(
     image("..\article_Supplementary Materials\figs\exp3\SR_filtered.svg"),
-    caption: [|《原神》中不同角色的对话文本的特征聚类。其中去除了对话文本数量较多的三月七、开拓者。],
+    caption: [|《崩坏：星穹铁道》中不同角色的对话文本的特征聚类。其中去除了对话文本数量较多的三月七、开拓者。],
     kind: "图S",
     supplement: "图S"
   )
@@ -233,8 +243,9 @@ $ phi.alt_i(f, x) = sum_(R in Re) 1/M! [f_(x)(P_i^R union i) - f_(x)(P_i^R) ]，
       align: horizon,
       table.hline(),
       table.header(
-          [文件名], [创建时间],
+          [访问时间], [章节],
       ),
+      table.hline(),
         [2024-04-04], [1.2.10\_时不我待，我的朋友、
           1.2.11\_静静的星河、
           1.2.1\_在屋外的黑暗中洗涤、
