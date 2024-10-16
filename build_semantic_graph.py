@@ -5,6 +5,7 @@ from os.path import join
 from json import load
 from copy import deepcopy
 from math import floor
+from json import dump
 
 from rich.table import Column
 from rich.progress import Progress, BarColumn, TextColumn
@@ -52,9 +53,9 @@ class MakeGraph:
         return subarrays
     
     def run(self, size:int, *, is_soft:bool=True, proportion:float=1) -> list[nx.Graph]:
-        text_column = TextColumn("Generating graphs from SDP...", table_column=Column(ratio=1))
-        bar_column = BarColumn(bar_width=None, table_column=Column(ratio=2))
-        progress = Progress(text_column, bar_column, expand=True)
+        text_column = TextColumn("Generating graphs from SDP...")
+        bar_column = BarColumn(bar_width=20)
+        progress = Progress(text_column, bar_column)
         
         subarries = self.__get_subarray(self.__sdp_result,
                                         size,
@@ -86,11 +87,10 @@ class MakeGraph:
 
 
 class GraphStats:
-    def __init__(self, path:str) -> None:
-        with open(path, 'r', encoding='utf-8') as f:
-            nlp_results = load(f)
-        
-        
+    def __init__(self, graphs:list[nx.Graph]) -> None:
+        self.graphs = graphs
+
+        self.graph_stats = []
 
     def __run_through_graphs(param_name:str):
         def inner(func):
@@ -100,16 +100,9 @@ class GraphStats:
 
                 results = []
                 for graph in self.graphs:
-                    year = list(graph.keys())[0]
-                    print(year)
+                    results.append(func(self, graph))
 
-                    results = []
-                    for i in list(graph.values())[0]:
-                        results.append(func(self, i))
-
-                    results.append({
-                        year: [{param_name: results}]
-                    })
+                self.graph_stats.append({param_name: results})
                 
                 return results
             
@@ -127,22 +120,19 @@ class GraphStats:
 
     @__run_through_graphs('shortest_path_length')
     def __shortest_path_len(self, g):
-        return nx.shortest_path_length(g)
+        shortest_path_len = nx.shortest_path_length(g)
+        if isinstance(shortest_path_len, int):
+            return shortest_path_len
+        else:
+            return list(shortest_path_len)
     
     @__run_through_graphs('average_shortest_path_length')
     def __average_shortest_path_length(self, g):
-        return nx.all_pairs_shortest_path_length(g)
+        return list(nx.all_pairs_shortest_path_length(g))
     
     @__run_through_graphs('clustering_coef')
     def __clustering_coef(self, g):
-        G = nx.DiGraph()
-        for u,v in g.edges():
-            if G.has_edge(u,v):
-                G[u][v]['weight'] += 1
-            else:
-                G.add_edge(u, v, weight=1)
-
-        return nx.cluster.clustering(G)
+        return nx.cluster.clustering(g)
     
     @__run_through_graphs('n_of_nodes')
     def __n_of_nodes(self, g):
@@ -166,9 +156,21 @@ class GraphStats:
         self.__shortest_path_len()
         self.__average_shortest_path_length()
         self.__clustering_coef()
-        self.__n_of_nodes()
-        self.__n_of_edges()
+        # self.__n_of_nodes()
+        # self.__n_of_edges()
         self.__in_degree()
         self.__out_degree()
 
-        print('The number of error(s):', self.err_counter)
+
+# if __name__ == '__main__':
+#     with open('data_for_exp_5\\gi_net\\0.1_捕风的异乡人.json', 'r', encoding='utf-8') as f:
+#         nlp_results = load(f)
+    
+#     mg = MakeGraph(nlp_results)
+#     g = mg.run(1)
+
+#     gs = GraphStats(g)
+#     gs.get_stats()
+
+#     with open('1.json', 'w', encoding='utf-8') as f:
+#         dump(gs.graph_stats, f, ensure_ascii=False, indent=2)
