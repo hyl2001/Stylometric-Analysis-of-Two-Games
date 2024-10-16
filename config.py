@@ -46,3 +46,14 @@ class ConfigExpirementFour(__BaseConfig):
 
     SR_CHAR_LINES_FILES_INCLUDED_JSON_SAVE_PATH = 'data_for_exp_4\\sr.json'
     GI_CHAR_LINES_FILES_INCLUDED_JSON_SAVE_PATH = 'data_for_exp_4\\gi.json'
+
+
+class CongfiExpirementFive(__BaseConfig):
+    SR_LINES_SAVE_PATH = 'data\\sr'
+    GI_LINES_SAVE_PATH = 'data\\gi'
+
+    SR_NETWORK_SAVE_FOLDER_PATH = 'data_for_exp_5\\sr_net'
+    GI_NETWORK_SAVE_FOLDER_PATH = 'data_for_exp_5\\gi_net'
+
+    SR_PARJEK_SAVE_PATH = 'data_for_exp_5\\sr_parjek'
+    GI_PARJEK_SAVE_PATH = 'data_for_exp_5\\gi_parjek'
