@@ -1,17 +1,11 @@
 import config
 import get_network
-import build_semantic_graph
-
-import pandas as pd
 
 from glob import glob
 from os.path import join
-from os import remove
-from json import dump
 
 
 config = config.CongfiExpirementFive
-
 
 #### Build Network ######################################################################################
 

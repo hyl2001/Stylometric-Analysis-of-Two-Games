@@ -11,7 +11,7 @@ class SDP:
 
         tasks = list(self.__mtl.tasks.keys())
         for task in tasks:
-            if task not in ('tok/fine', 'sdp'):
+            if task not in ('tok/fine', 'pos/ctb', 'sdp'):
                 del self.__mtl[task]
 
     def run_and_save(self, text:str, save_path:str):
